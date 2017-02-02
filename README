@@ -1,0 +1,45 @@
+CS111 - Project 1A: I/O and IPC	   Name: Uday Shankar Alla	ID:404428077
+
+The following README file contains information about each of the following
+submissions:
+1)lab1.c
+2)Makefile
+
+==========================================================================
+lab1.c
+==========================================================================
+Program accepts no args or --shell argument from command line and does
+the following:
+1) When no args are passed:
+   a)puts the console into a noncanonical/no echo character at a time mode
+   b)reads input from keyboard into buffer
+   c)maps <cr> or <lf> to <cr><lf>
+   d)write recieved characters back to terminal character at a time.
+   e)when ^D is pressed restores original terminal settings and exits
+  This part of the program works perfectly without any errors. As spec
+  suggested termios, tcgetattr and tcsetattr were used to manipulate
+  terminal modes. Input from keyboard was read using read(2) into a
+  buffer and similarly outputted to terminal using write(2).
+2)when --shell arg is passed:
+   a)fork() to create child process where I execvp() to /bin/bash
+   b)creates 2 pipes for stdin, stdout
+   c)creates 2 threads to simultaneously read and write from
+     parent and child process
+   d)maps <cr> and <lf> accordingly
+   e)follows instructions specified on spec when recieving ^C, ^D, EOF
+     and SIGPIPE.
+   f)prints shells exit status
+
+Testing: I first executed with no args passed and tested with ^D to see if it
+exited correctly. Then I tested with --shell argument. I performed all the
+various ^C,^D, exit, and EOF to see if program behaved accordingly. I checked
+to see if terminal modes were reset on exiting.
+
+===========================================================================
+Makefile
+==========================================================================
+A simple makefile that has the following targets:
+a)default- simply compiles with options -pthread so as to allow threading
+b)clean- deletes all (intermediary files)
+  buffer files, .o files and executables created.
+c)dist- to tar the makefile, readme and lab1.c in a tarball
